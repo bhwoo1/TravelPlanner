@@ -9,3 +9,14 @@ body {
   background: #E2E8F0;
   font-family: 'NanumSquare', sans-serif;
 }
+
+html.dark body {
+  color: rgb(197, 196, 196);
+  background-color: rgb(17, 19, 27);
+  margin-bottom: 100px;
+}
+
+html.dark header {
+  color: rgb(197, 196, 196);
+  background-color: rgb(17, 19, 27);
+}
