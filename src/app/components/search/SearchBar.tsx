@@ -10,7 +10,7 @@ function SearchBar() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-6 p-6 rounded-2xl shadow-md max-w-xl mx-auto w-11/12 text-[12px] md:text-lg font-medium"
+      className="flex flex-col gap-6 p-6 rounded-2xl shadow-md mx-auto w-11/12 text-[12px] md:text-lg font-medium"
     >
       <div className="flex flex-wrap items-center gap-2">
         <p>나는</p>
