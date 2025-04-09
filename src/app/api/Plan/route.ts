@@ -20,7 +20,7 @@ export async function POST(req: Request) {
         }
 
         const response = await gptClient.responses.create({
-            model: "gpt-40",
+            model: "gpt-4o",
             input: `다음 조건에 맞는 여행 일정을 만들어 주세요.
                 - 출발지: ${from},
                 - 여행지: ${to},
