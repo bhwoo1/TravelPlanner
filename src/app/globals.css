@@ -10,6 +10,10 @@ body {
   font-family: 'NanumSquare', sans-serif;
 }
 
+form {
+  background: #F1F5F9
+}
+
 html.dark body {
   color: rgb(197, 196, 196);
   background-color: rgb(17, 19, 27);
@@ -19,4 +23,8 @@ html.dark body {
 html.dark header {
   color: rgb(197, 196, 196);
   background-color: rgb(17, 19, 27);
+}
+
+html.dark form {
+  background: #1E293B
 }
