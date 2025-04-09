@@ -7,15 +7,12 @@ const gptClient = new OpenAI({
 
 export async function POST(req: Request) {
     try {
-        const formData = await req.formData();
-        const from = formData.get("from");
-        const to = formData.get("to");
-        const transport = formData.get("transport");
-        const nights = formData.get("nights");
-        const days = formData.get("days");
-        const keywords = formData.get("keywords");
+        const { from, to, transport, nights, days, keywords } = await req.json();
 
-        if (!from || !to || !transport || !nights || !days) {
+        const stringNights = String(nights);
+        const stringDays = String(days);
+
+        if (!from || !to || !transport || !stringNights || !stringDays) {
             return NextResponse.json({error: "Required field is missing."}, {status: 400});           
         }
 
@@ -32,14 +29,16 @@ export async function POST(req: Request) {
                 조건:
                 - 출발지에서 도착지까지 제시한 이동수단으로 이동하는 경로를 알려주세요.
                 - 실제 존재하는 장소로 추천해주세요.
-                - 일정에 나온 장소 이름과 주소(구글 지도로 검색 가능한)를 따로 목록으로 만들어 알려주세요.
-                - 결과는 JSON 형식으로 응답해주세요.
+                - 일정에 나온 장소 이름과 주소를 따로 목록으로 만들어 알려주세요.
+                - 만약 출발지에서 여행지까지 사용자가 선택한 교통수단으로 갈 수 없는 곳이면 대체 교통을 해당 이동수단의 details에 알려주세요.
+                - 결과는 JSON 형식으로 itinerary(time, activity, details), places(name, address)로 응답해주세요.
             `
         });
 
-        if (!response) return NextResponse.json({error: "Failed to Plan"}, {status: 400});  
 
-        return NextResponse.json({response}, { status: 200 });
+        if (!response) return NextResponse.json({error: "Failed to Plan"}, {status: 400});  
+        console.log(response.output_text);
+        return NextResponse.json({ result: response.output_text }, { status: 200 });
     } catch (err) {
         console.error("Error: ", err);
 

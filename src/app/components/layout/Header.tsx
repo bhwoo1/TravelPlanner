@@ -11,7 +11,7 @@ function Header() {
           <Image src={"/ic.png"} alt="logo" fill className="object-contain" />
         </Link>
       </div>
-      <div className='mx-12 lg:mx-48 2xl:mx-80 hidden'>
+      <div className='mx-12 lg:mx-48 2xl:mx-80 hidden 2xl:block'>
         <Navigator />
       </div>
     </header>
