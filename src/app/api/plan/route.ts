@@ -21,7 +21,8 @@ const pool = mysql.createPool({
 
 export async function GET(req: Request) {
   try {
-    const { planId } = await req.json();
+    const { searchParams } = new URL(req.url);
+    const planId = searchParams.get("planId");
 
     if (!planId) {
       return NextResponse.json(
@@ -37,22 +38,38 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Plan not found." }, { status: 400 });
     }
 
-    const [itinerary] = await pool.execute("SELECT * FROM itineraries WHERE plan_id = ?", [planId]);
+    const [itinerary] = await pool.execute(
+      "SELECT * FROM itineraries WHERE plan_id = ?",
+      [planId]
+    );
     if (!itinerary) {
-        return NextResponse.json({ error: "Itinerary not found." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Itinerary not found." },
+        { status: 400 }
+      );
     }
 
-    const [places] = await pool.execute('SELECT * FROM places WHERE plan_id = ?', [planId]);
+    const [places] = await pool.execute(
+      "SELECT * FROM places WHERE plan_id = ?",
+      [planId]
+    );
     if (!places) {
-        return NextResponse.json({ error: "Places are not found." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Places are not found." },
+        { status: 400 }
+      );
     }
 
+    console.log(plan);
+    console.log(itinerary);
+    console.log(places);
+
+    
     return NextResponse.json({
-        planId,
-        itinerary: itinerary,
-        places: places,
-      });
-      
+      planId,
+      itinerary: itinerary,
+      places: places,
+    });
   } catch (err) {
     console.error("Error: ", err);
 
