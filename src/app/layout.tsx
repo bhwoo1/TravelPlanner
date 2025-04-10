@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "떠나봄",
+  title: "떠나봄 - AI 여행 플래너",
   description: "AI 기반 여행 플래너로 여정을 떠나봄~!",
   icons: {
     icon: "/ic.png",
