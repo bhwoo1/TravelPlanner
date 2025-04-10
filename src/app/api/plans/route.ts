@@ -1,28 +1,12 @@
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
-import mysql, { ResultSetHeader } from "mysql2/promise";
+import { ResultSetHeader } from "mysql2/promise";
+import { Pool } from "@/app/lib/db";
 
 const gptClient = new OpenAI({
   apiKey: process.env.NEXT_PUBLIC_OPEN_AI_API,
 });
 
-const host = process.env.DB_HOST;
-const user = process.env.DB_USER;
-const password = process.env.DB_PASSWORD;
-const db = process.env.DB_DBNAME;
-const port = 3306;
-
-// MySQL 데이터베이스 연결 설정
-const pool = mysql.createPool({
-  host: host,
-  port: port,
-  user: user,
-  password: password,
-  database: db,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
-});
 
 export async function POST(req: Request) {
   try {
@@ -92,7 +76,7 @@ export async function POST(req: Request) {
 
     console.log(jsonData);
 
-    const [planResult] = await pool.execute<ResultSetHeader>(
+    const [planResult] = await Pool.execute<ResultSetHeader>(
       `INSERT INTO plans (from_city, to_city, transport, nights, days, keywords) VALUES (?, ?, ?, ?, ?, ?)`,
       [from, to, transport, nights, days, keywords]
     );
@@ -100,14 +84,14 @@ export async function POST(req: Request) {
     const planId = planResult.insertId;
 
     for (const item of itinerary) {
-      await pool.execute(
+      await Pool.execute(
         `INSERT INTO itineraries (plan_id, day, time, activity, details) VALUES (?, ?, ?, ?, ?)`,
         [planId, item.day, item.time, item.activity, item.details]
       );
     }
 
     for (const place of places) {
-      await pool.execute(
+      await Pool.execute(
         `INSERT INTO places (plan_id, name, address) VALUES (?, ?, ?)`,
         [planId, place.name, place.address]
       );
