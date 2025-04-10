@@ -4,12 +4,12 @@ const host = process.env.DB_HOST;
 const user = process.env.DB_USER;
 const password = process.env.DB_PASSWORD;
 const db = process.env.DB_DBNAME;
-const port = 3306;
+const port = process.env.DB_PORT;
 
 
 export const Pool = mysql.createPool({
   host: host,
-  port: port,
+  port: Number(port),
   user: user,
   password: password,
   database: db,
