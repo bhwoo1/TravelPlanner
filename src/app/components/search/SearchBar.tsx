@@ -1,6 +1,8 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
+import Swal from "sweetalert2";
 
 type Plan = {
   from: string;
@@ -22,21 +24,39 @@ const initialPlan = {
 
 function SearchBar() {
   const [plan, setPlan] = useState<Plan>(initialPlan);
+  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(plan)
-    const res = await fetch("/api/plans", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(plan),
-    });
+    try {
+      const res = await fetch("/api/plans", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(plan),
+      });
+  
+      const data = await res.json();
+      const planId = data.planId;
+      
+      if (data) {
+        router.push(`/plan/${planId}`);
+      }
+      setPlan(initialPlan);
+    } catch (err) {
+      console.error(err);
+      Swal.fire({
+        title: "Error!",
+        icon: "error",
+        text: "계획을 짜는데 실패했어요... 다시 시도해주세요.",
+        showConfirmButton: false,
+        timer: 1000
+      })
+    }
+    
 
-    const data = await res.json();
-    console.log(data);
-    setPlan(initialPlan);
+    
   };
 
 
