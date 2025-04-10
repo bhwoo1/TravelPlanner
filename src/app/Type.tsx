@@ -16,3 +16,12 @@ export interface Plan {
     description: string;
     image: string;
   }
+
+  export type Itinerary = {
+    id: number;
+    plan_id: number;
+    time: string;
+    activity: string;
+    details: string;
+    day: number;
+  };

@@ -108,6 +108,7 @@ function SearchBar() {
         <input
           type="number"
           min={0}
+          max={9}
           className="border rounded-lg w-16 px-2 py-1"
           placeholder="박"
           value={plan.nights}
@@ -117,6 +118,7 @@ function SearchBar() {
         <input
           type="number"
           min={1}
+          max={10}
           className="border rounded-lg w-16 px-2 py-1"
           placeholder="일"
           value={plan.days}

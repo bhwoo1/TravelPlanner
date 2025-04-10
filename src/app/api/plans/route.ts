@@ -38,6 +38,8 @@ export async function POST(req: Request) {
       );
     }
 
+    console.log(from, to, transport, nights, days, keywords);
+
     const response = await gptClient.chat.completions.create({
       model: "gpt-4o",
       messages: [
@@ -53,7 +55,7 @@ export async function POST(req: Request) {
               조건:
               - 답변은 한국어로 해주세요.
               - 출발지에서 도착지까지 제시한 이동수단으로 이동하는 경로를 알려주세요.
-              - 날짜와 시간을 따로 만들어주세요. 예: day: 1 , time: 12:00(1일차 12시)
+              - 날짜와 시간을 따로 만들어주세요. 시간은 어디 시간 기준인지 표시해야 합니다. 예: day: 1 , time: 12:00(1일차 12시)
               - 입장 시간 제한이 있는 곳을 고려해서 답변해주세요.
               - 각 장소의 실제 운영 시간을 고려해서 방문 시간을 정해 주세요. 예: 월~일 10:00~18:00.
               - 운영 시간 밖의 일정은 배정하지 마세요.
@@ -62,7 +64,11 @@ export async function POST(req: Request) {
               - 일정에 나온 장소 이름과 주소를 따로 목록으로 만들어 알려주세요.
               - 주소에는 한글 혹은 영문 알파벳으로만 표기해주세요.
               - 만약 출발지에서 여행지까지 사용자가 선택한 교통수단으로 갈 수 없는 곳이면 대체 교통을 해당 이동수단의 details에 알려주세요.
-              - 결과는 React에서 사용할 수 있는 형식으로 itinerary(time, activity, details), places(name, address)로 응답해주세요.`,
+              - 하루 일정은 최대 4개까지만 만들어주세요.
+              - 결과는 React에서 사용할 수 있는 형식으로 itinerary(time, activity, details), places(name, address)로 응답해주세요.
+              - 결과에 주석은 포함하지 말아주세요.
+              - 최대 10일차까지 생성해주시고 지정한 날짜는 반드시 지켜주세요.
+              - 결과에는 데이터만 포함해주세요. 기타 다른 예약어, 주석 등은 절대 삽입하지 말아주세요.`,
         },
       ],
     });
@@ -73,16 +79,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "GPT 응답 없음" }, { status: 500 });
     }
     const cleanJsonText = resultText
+      .replace(/```[a-z]*\n?/gi, "")
+      .replace(/```/g, "")
       .replace(/^```json\s*/, "")
       .replace(/```$/, "")
       .trim();
+
+    console.log(cleanJsonText);
 
     const jsonData = JSON.parse(cleanJsonText);
     const { itinerary, places } = jsonData;
 
     console.log(jsonData);
-
-
 
     const [planResult] = await pool.execute<ResultSetHeader>(
       `INSERT INTO plans (from_city, to_city, transport, nights, days, keywords) VALUES (?, ?, ?, ?, ?, ?)`,
