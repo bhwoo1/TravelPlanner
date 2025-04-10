@@ -53,7 +53,7 @@ export async function POST(req: Request) {
               조건:
               - 답변은 한국어로 해주세요.
               - 출발지에서 도착지까지 제시한 이동수단으로 이동하는 경로를 알려주세요.
-              - 시간은 '몇일차, 몇 시' 형식으로 표시해 주세요. 예: 2일차, 12:00
+              - 날짜와 시간을 따로 만들어주세요. 예: day: 1 , time: 12:00(1일차 12시)
               - 입장 시간 제한이 있는 곳을 고려해서 답변해주세요.
               - 각 장소의 실제 운영 시간을 고려해서 방문 시간을 정해 주세요. 예: 월~일 10:00~18:00.
               - 운영 시간 밖의 일정은 배정하지 마세요.
@@ -93,8 +93,8 @@ export async function POST(req: Request) {
 
     for (const item of itinerary) {
       await pool.execute(
-        `INSERT INTO itineraries (plan_id, time, activity, details) VALUES (?, ?, ?, ?)`,
-        [planId, item.time, item.activity, item.details]
+        `INSERT INTO itineraries (plan_id, day, time, activity, details) VALUES (?, ?, ?, ?, ?)`,
+        [planId, item.day, item.time, item.activity, item.details]
       );
     }
 
