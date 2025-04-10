@@ -25,3 +25,10 @@ export interface Plan {
     details: string;
     day: number;
   };
+
+  export type Place = {
+    id: number;
+    plan_id: number;
+    name: string;
+    address: string;
+  }

@@ -7,6 +7,7 @@ import Title from "./Title";
 import PlanBlock from "./block/PlanBlock";
 import { Itinerary } from "@/app/Type";
 import DayBlock from "./block/DayBlock";
+import Map from "./Map";
 
 const fetchPlan = async (planId: number) => {
   try {
@@ -43,8 +44,6 @@ function PlanPage({ planId }: { planId: number }) {
     {} as Record<number, Itinerary[]>
   );
 
-  console.log(groupByDay);
-
   return (
     <main className="flex flex-col">
       <div className="absolute top-0 w-full mt-[80px]">
@@ -56,7 +55,9 @@ function PlanPage({ planId }: { planId: number }) {
           <PlanBlock plan={data.plan} />
         </div>
         <div className="flex flex-col gap-4 mt-12">
-          <p className="text-center font-bold text-sm">🛬 교통편은 실제와 다를 수 있습니다.</p>
+          <p className="text-center font-bold text-sm">
+            🛬 교통편은 실제와 다를 수 있습니다.
+          </p>
           <div className="grid grid-rows lg:grid-cols-3 gap-2">
             {Object.entries(groupByDay as Record<number, Itinerary[]>).map(
               ([day, items]) => (
@@ -67,8 +68,8 @@ function PlanPage({ planId }: { planId: number }) {
             )}
           </div>
         </div>
-        <div>
-
+        <div className="mt-12 w-full">
+          <Map places={data.places}/>
         </div>
       </section>
     </main>
