@@ -26,7 +26,7 @@ function SearchBar() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     console.log(plan)
-    const res = await fetch("/api/plan", {
+    const res = await fetch("/api/plans", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -55,13 +55,24 @@ function SearchBar() {
           onChange={(e) => setPlan({ ...plan, from: e.target.value })}
         />
         <p>에서</p>
-        <input
-          type="text"
-          placeholder="여행지"
-          className="border-b-2 border-gray-300 focus:outline-none focus:border-blue-400 px-2 py-1 w-32"
-          value={plan.to}
-          onChange={(e) => setPlan({ ...plan, to: e.target.value })}
-        />
+        <select className="border rounded-lg px-3 py-2" value={plan.to} onChange={(e) => setPlan({ ...plan, to: e.target.value })}>
+          <option value="">여행지 선택</option>
+          <option value="서울">서울</option>
+          <option value="부산">부산</option>
+          <option value="제주">제주</option>
+          <option value="경주">경주</option>
+          <option value="파리">파리</option>
+          <option value="로마">로마</option>
+          <option value="바르셀로나">바르셀로나</option>
+          <option value="런던">런던</option>
+          <option value="뉴욕">뉴욕</option>
+          <option value="도쿄">도쿄</option>
+          <option value="교토">교토</option>
+          <option value="시드니">시드니</option>
+          <option value="싱가포르">싱가포르</option>
+          <option value="이스탄불">이스탄불</option>
+          <option value="프라하">프라하</option>
+        </select>
         <p>로</p>
       </div>
 
