@@ -32,3 +32,11 @@ export interface Plan {
     name: string;
     address: string;
   }
+
+  export type Location = {
+    id: number;
+    name: string;
+    address: string;
+    lat: number;
+    lng: number;
+  };

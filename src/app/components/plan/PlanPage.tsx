@@ -9,6 +9,7 @@ import { Itinerary } from "@/app/Type";
 import DayBlock from "./block/DayBlock";
 import MapComponent from "./MapComponent";
 
+
 const fetchPlan = async (planId: number) => {
   try {
     const res = await fetch(`/api/plan?planId=${planId}`, {
