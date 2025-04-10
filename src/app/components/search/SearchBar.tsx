@@ -99,10 +99,10 @@ function SearchBar() {
       <div className="flex flex-wrap items-center gap-2">
         <select className="border rounded-lg px-3 py-2" value={plan.transport} onChange={(e) => setPlan({ ...plan, transport: e.target.value })}>
           <option value="">교통수단 선택</option>
-          <option value="car">자동차</option>
-          <option value="train">기차</option>
-          <option value="plane">비행기</option>
-          <option value="bus">버스</option>
+          <option value="자동차">자동차</option>
+          <option value="기차">기차</option>
+          <option value="비행기">비행기</option>
+          <option value="버스">버스</option>
         </select>
         <p>를 타고</p>
         <input
