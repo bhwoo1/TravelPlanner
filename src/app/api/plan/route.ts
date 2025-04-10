@@ -1,3 +1,4 @@
+import { Plan } from "@/app/Type";
 import mysql from "mysql2/promise";
 import { NextResponse } from "next/server";
 
@@ -38,6 +39,10 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "Plan not found." }, { status: 400 });
     }
 
+    const planRow = (plan as Plan[])[0];
+    const toCity = planRow.to_city;
+    const [city] = await pool.execute("SELECT * FROM TOUR WHERE city = ?", [toCity])
+
     const [itinerary] = await pool.execute(
       "SELECT * FROM itineraries WHERE plan_id = ?",
       [planId]
@@ -61,12 +66,15 @@ export async function GET(req: Request) {
     }
 
     console.log(plan);
+    console.log(city);
     console.log(itinerary);
     console.log(places);
 
-    
+
     return NextResponse.json({
       planId,
+      plan: plan,
+      city: city,
       itinerary: itinerary,
       places: places,
     });
