@@ -7,7 +7,7 @@ import Title from "./Title";
 import PlanBlock from "./block/PlanBlock";
 import { Itinerary } from "@/app/Type";
 import DayBlock from "./block/DayBlock";
-import Map from "./Map";
+import MapComponent from "./MapComponent";
 
 const fetchPlan = async (planId: number) => {
   try {
@@ -69,7 +69,7 @@ function PlanPage({ planId }: { planId: number }) {
           </div>
         </div>
         <div className="mt-12 w-full">
-          <Map places={data.places}/>
+          <MapComponent places={data.places}/>
         </div>
       </section>
     </main>

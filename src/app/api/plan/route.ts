@@ -65,11 +65,6 @@ export async function GET(req: Request) {
       );
     }
 
-    console.log(plan);
-    console.log(city);
-    console.log(itinerary);
-    console.log(places);
-
 
     return NextResponse.json({
       planId,
