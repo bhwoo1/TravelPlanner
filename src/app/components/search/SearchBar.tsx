@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 import Swal from "sweetalert2";
+import Loading from "../Loading";
 
 type Plan = {
   from: string;
@@ -22,12 +23,18 @@ const initialPlan = {
   keywords: "",
 };
 
+
+
 function SearchBar() {
   const [plan, setPlan] = useState<Plan>(initialPlan);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
+
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       const res = await fetch("/api/plans", {
         method: "POST",
@@ -53,14 +60,18 @@ function SearchBar() {
         showConfirmButton: false,
         timer: 1000
       })
+    } finally {
+      setIsLoading(false);
     }
-    
-
     
   };
 
 
   return (
+    <>
+    {isLoading && 
+      <Loading />
+    }
     <form
       onSubmit={handleSubmit}
       className="flex flex-col gap-6 p-6 rounded-2xl shadow-md mx-auto w-11/12 lg:w-2/3 2xl:w-1/3 text-[12px] md:text-lg font-medium text-center justify-center items-center"
@@ -141,6 +152,7 @@ function SearchBar() {
         여행 계획 추천해줘~
       </button>
     </form>
+    </>
   );
 }
 

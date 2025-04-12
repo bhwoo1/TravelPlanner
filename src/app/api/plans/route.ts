@@ -49,7 +49,8 @@ export async function POST(req: Request) {
               - 주소에는 한글 혹은 영문 알파벳으로만 표기해주세요.
               - 만약 출발지에서 여행지까지 사용자가 선택한 교통수단으로 갈 수 없는 곳이면 대체 교통을 해당 이동수단의 details에 알려주세요.
               - 하루 일정은 최대 4개까지만 만들어주세요.
-              - 결과는 React에서 사용할 수 있는 형식으로 itinerary(time, activity, details), places(name, address)로 응답해주세요.
+              - 결과는 React에서 사용할 수 있는 형식으로 itinerary(day, time, activity, details), places(name, address)로 응답해주세요.
+              - itinerary와 places는 별개로 분리해서 답변해주세요.
               - 결과에 주석은 포함하지 말아주세요.
               - 최대 10일차까지 생성해주시고 지정한 날짜는 반드시 지켜주세요.
               - 결과에는 데이터만 포함해주세요. 기타 다른 예약어, 주석 등은 절대 삽입하지 말아주세요.`,

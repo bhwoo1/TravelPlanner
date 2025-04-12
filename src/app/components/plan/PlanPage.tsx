@@ -8,7 +8,9 @@ import PlanBlock from "./block/PlanBlock";
 import { Itinerary } from "@/app/Type";
 import DayBlock from "./block/DayBlock";
 import MapComponent from "./MapComponent";
-
+import SkyBlock from "./block/SkyBlock";
+import HotelBlock from "./block/HotelBlock";
+import NoneBlock from "./block/NoneBlock";
 
 const fetchPlan = async (planId: number) => {
   try {
@@ -45,6 +47,7 @@ function PlanPage({ planId }: { planId: number }) {
     {} as Record<number, Itinerary[]>
   );
 
+
   return (
     <main className="flex flex-col">
       <div className="absolute top-0 w-full mt-[80px]">
@@ -55,6 +58,10 @@ function PlanPage({ planId }: { planId: number }) {
           <Title city={data.city[0]} />
           <PlanBlock plan={data.plan} />
         </div>
+        <section className="flex flex-col md:flex-row mt-12 gap-2 lg:hidden">
+          {data.plan[0].transport === "비행기" ? <SkyBlock plan={data.plan} /> : <NoneBlock transport={data.plan[0].transport}/>}
+          <HotelBlock plan={data.plan} />
+        </section>
         <div className="flex flex-col gap-4 mt-12">
           <p className="text-center font-bold text-sm">
             🛬 교통편은 실제와 다를 수 있습니다.
@@ -70,7 +77,7 @@ function PlanPage({ planId }: { planId: number }) {
           </div>
         </div>
         <div className="mt-12 w-full">
-          <MapComponent places={data.places}/>
+          <MapComponent places={data.places} />
         </div>
       </section>
     </main>
