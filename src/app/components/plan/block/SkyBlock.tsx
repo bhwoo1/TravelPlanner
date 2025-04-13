@@ -23,24 +23,6 @@ const cityToSkyscannerCode: Record<string, string> = {
 
 function SkyBlock({ plan }: { plan: Plan[] }) {
     const destinationCode = cityToSkyscannerCode[plan[0].to_city]; // 도시명 → 공항 코드 변환
-    // useEffect(() => {
-    //     const fetchFlights = async (destinationCode: string) => {
-          
-    //       try {
-    //         await fetch("/api/flight", {
-    //           method: "POST",
-    //           headers: {
-    //             "Content-Type": "application/json",
-    //           },
-    //           body: JSON.stringify(destinationCode),
-    //         });
-    
-    //       } catch (err) {
-    //         console.error(err);
-    //       }
-    //     };
-    //     fetchFlights(destinationCode);
-    //   }, [destinationCode]);
 
   const generateSkyscannerRoundTripLink = (plan: Plan[]) => {
     const formatDate = (date: Date) => {

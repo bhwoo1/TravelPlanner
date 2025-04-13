@@ -15,7 +15,7 @@ function HotelBlock({ hotel }: { hotel: Hotel }) {
         <div className="relative w-[100px] h-[100px] overflow-hidden rounded-xl bg-gray-100 hidden md:block">
           <Image
             src={hotel.photo === null ? "/No_IMG.jpg" : hotel.photo}
-            alt="place_photo"
+            alt="hotel_logo"
             fill
             className="object-cover"
           />

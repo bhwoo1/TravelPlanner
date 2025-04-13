@@ -31,8 +31,6 @@ function PlanPage({ planId }: { planId: number }) {
     queryFn: () => fetchPlan(planId),
   });
 
-  console.log(data);
-
   if (isLoading) return <div>로딩 중...</div>;
   if (isError) return <div>에러 발생</div>;
 
@@ -72,9 +70,6 @@ function PlanPage({ planId }: { planId: number }) {
             )}
           </div>
         </div>
-        {/* <div className="mt-12 w-full">
-          <MapComponent places={data.places} />
-        </div> */}
         <div className="mt-12 w-full">
           <PlaceComponent places={data.places} />
         </div>

@@ -35,7 +35,7 @@ function MapComponent({locations}: {locations: Location[] | Hotel[]}) {
   }, [width]);
 
   if (!locations || locations.length === 0) {
-    return <div>지도에에 표시할 위치 정보가 없습니다.</div>;
+    return <div>지도에 표시할 위치 정보가 없습니다.</div>;
   }
   
   return (
