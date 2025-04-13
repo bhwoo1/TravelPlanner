@@ -4,25 +4,44 @@ import Link from "next/link";
 import React from "react";
 
 const cityToSkyscannerCode: Record<string, string> = {
-    서울: "SELA",          // 인천(ICN), 김포(GMP)
-    부산: "PUSA",          // 김해(PUS)
-    제주: "CJUA",          // 제주(CJU)
-    경주: "PUSA",          // 부산 공항 사용 (김해)
-    런던: "LONA",          // LHR, LGW, STN, LCY, SEN
-    교토: "OSAA",          // 간사이공항(KIX) 또는 오사카(ITM)
-    도쿄: "TYOA",          // NRT, HND
-    파리: "PARA",          // CDG, ORY, BVA
-    로마: "ROMA",          // FCO, CIA
-    바르셀로나: "BCNA",    // BCN
-    싱가포르: "SINA",       // SIN
-    시드니: "SYDA",         // SYD
-    프라하: "PRGA",         // PRG
-    뉴욕: "NYCA",           // JFK, LGA, EWR
-    이스탄불: "ISTA"        // IST, SAW
+    "서울": "ICN",  // 인천공항
+    "부산": "PUS",  // 김해공항
+    "제주": "CJU",  // 제주공항
+    "경주": "PUS",  // 김해공항
+    "파리": "CDG",  // 샤를드골공항
+    "로마": "FCO",  // 로마공항
+    "바르셀로나": "BCN",  // 바르셀로나공항
+    "런던": "LHR",  // 히드로공항
+    "뉴욕": "JFK",  // JFK공항
+    "도쿄": "HND",  // 하네다공항
+    "교토": "KIX",  // 간사이공항
+    "시드니": "SYD",  // 시드니공항
+    "싱가포르": "SIN",  // 창이공항
+    "이스탄불": "IST",  // 이스탄불공항
+    "프라하": "PRG",  // 프라하공항
   };
 
 function SkyBlock({ plan }: { plan: Plan[] }) {
-  console.log(plan[0].to_city);
+    const destinationCode = cityToSkyscannerCode[plan[0].to_city]; // 도시명 → 공항 코드 변환
+    // useEffect(() => {
+    //     const fetchFlights = async (destinationCode: string) => {
+          
+    //       try {
+    //         await fetch("/api/flight", {
+    //           method: "POST",
+    //           headers: {
+    //             "Content-Type": "application/json",
+    //           },
+    //           body: JSON.stringify(destinationCode),
+    //         });
+    
+    //       } catch (err) {
+    //         console.error(err);
+    //       }
+    //     };
+    //     fetchFlights(destinationCode);
+    //   }, [destinationCode]);
+
   const generateSkyscannerRoundTripLink = (plan: Plan[]) => {
     const formatDate = (date: Date) => {
       const year = date.getFullYear();
@@ -42,12 +61,10 @@ function SkyBlock({ plan }: { plan: Plan[] }) {
     // 날짜 포맷팅
     const formattedDeparture = formatDate(departureDate); // 'YYYYMMDD'
     const formattedReturn = formatDate(returnDate); // 'YYYYMMDD'
-  
-    console.log(formattedDeparture);
-    console.log(formattedReturn);
+
   
     // Skyscanner 링크 생성
-    const destinationCode = cityToSkyscannerCode[plan[0].to_city]; // 도시명 → 공항 코드 변환
+    
     if (!destinationCode) {
       throw new Error(`알 수 없는 도시: ${plan[0].to_city}`);
     }

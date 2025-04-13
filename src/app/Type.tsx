@@ -33,10 +33,15 @@ export interface Plan {
     address: string;
   }
 
-  export type Location = {
+  export interface Location {
     id: number;
     name: string;
     address: string;
     lat: number;
     lng: number;
+    photo: string;
   };
+
+  export interface Hotel extends Location {
+    rating: number;
+  }

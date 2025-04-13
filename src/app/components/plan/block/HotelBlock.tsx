@@ -1,52 +1,32 @@
-import { Plan } from "@/app/Type";
+import { Hotel } from "@/app/Type";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const cityToTripAdvisorCode: { [key: string]: string } = {
-  서울: "g294196",
-  부산: "g294198",
-  제주: "g294181",
-  경주: "g294192",
-  파리: "g187147",
-  로마: "g187791",
-  바르셀로나: "g187497",
-  런던: "g186338",
-  뉴욕: "g60763",
-  도쿄: "g298184",
-  교토: "g298564",
-  시드니: "g255060",
-  싱가포르: "g294265",
-  이스탄불: "g293974",
-  프라하: "g274684",
-};
-
-function HotelBlock({ plan }: { plan: Plan[] }) {
-  const generateTripAdvisorHotelLink = (plan: Plan[]) => {
-
-    const destinationCode = cityToTripAdvisorCode[plan[0].to_city]; // 도시명 → TripAdvisor 코드 변환
-    if (!destinationCode) {
-      throw new Error(`알 수 없는 도시: ${plan[0].to_city}`);
-    }
-
-
-    return `https://www.tripadvisor.co.kr/Hotels-${destinationCode}-호텔.html`;
-  };
+function HotelBlock({ hotel }: { hotel: Hotel }) {
+  const fullQuery = `${hotel.name} ${hotel.address}`;
+  const googleMapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    fullQuery
+  )}`;
 
   return (
-    <div className="w-full md:w-1/2">
-      <Link href={generateTripAdvisorHotelLink(plan)} target="_blank">
-        <div className="flex flex-row items-center gap-4 justify-center bg-[#34E0A1] text-white px-4 py-2 rounded-lg cursor-pointer">
+    <Link target="_blank" href={googleMapUrl}>
+      <div className="flex flex-row p-4 mb-4 bg-white rounded-2xl shadow-md gap-4 cursor-pointer">
+        <div className="relative w-[100px] h-[100px] overflow-hidden rounded-xl bg-gray-100 hidden md:block">
           <Image
-            src="/tripadvisor-icon.png"
-            alt="tripadvisor_logo"
-            width={50}
-            height={50}
+            src={hotel.photo === null ? "/No_IMG.jpg" : hotel.photo}
+            alt="place_photo"
+            fill
+            className="object-cover"
           />
-          <p className="text-2xl font-bold">숙소 검색</p>
         </div>
-      </Link>
-    </div>
+        <div className="flex flex-col">
+          <p className="text-lg font-semibold text-gray-800">{hotel.name}</p>
+          <p className="text-sm text-gray-500">{hotel.address}</p>
+          <p className="text-sm text-gray-500">⭐{hotel.rating}</p>
+        </div>
+      </div>
+    </Link>
   );
 }
 

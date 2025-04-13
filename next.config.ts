@@ -2,7 +2,8 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["velog.velcdn.com"],
+    domains: ["velog.velcdn.com", "maps.googleapis.com", "lh3.googleusercontent.com"],
+    
   },
 };
 
