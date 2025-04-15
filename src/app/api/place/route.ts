@@ -59,7 +59,6 @@ export async function POST(req: Request) {
     const hotelArray = data.places;
 
     for (const [index, hotel] of hotelArray.entries()) {
-      console.log(hotel.displayName.text);
       hotelData.push({
         id: index,
         name: hotel.displayName.text,

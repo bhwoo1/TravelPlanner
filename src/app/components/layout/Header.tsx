@@ -1,6 +1,7 @@
-import Image from 'next/image'
-import Link from 'next/link'
-import React from 'react'
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import LoginButton from "./LoginButton";
 // import Navigator from './Navigator'
 
 function Header() {
@@ -11,11 +12,14 @@ function Header() {
           <Image src={"/ic.png"} alt="logo" fill className="object-contain" />
         </Link>
       </div>
+      <div className="mx-12 lg:mx-48 2xl:mx-80 hidden 2xl:block">
+        <LoginButton />
+      </div>
       {/* <div className='mx-12 lg:mx-48 2xl:mx-80 hidden 2xl:block'>
         <Navigator />
       </div> */}
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;
