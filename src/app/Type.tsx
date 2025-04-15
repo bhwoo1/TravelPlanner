@@ -45,3 +45,9 @@ export interface Plan {
   export interface Hotel extends Location {
     rating: number;
   }
+
+  export interface User {
+    id: number,
+    email: string,
+    name: string
+  }

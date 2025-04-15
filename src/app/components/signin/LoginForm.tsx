@@ -31,25 +31,25 @@ function LoginForm() {
     console.log("SIGNIN RESULT:", result);
 
     // 로그인 실패 시 처리
-  if (result?.error || !result?.ok) {
-    Swal.fire({
-      icon: "error",
-      title: "로그인 실패",
-      text: "이메일 또는 비밀번호가 올바르지 않습니다.",
-      showConfirmButton: true,
-    });
-  } 
-  // 로그인 성공 시 처리
-  else if (result?.ok) {
-    Swal.fire({
-      icon: "success",
-      title: "로그인 성공!",
-      showConfirmButton: false,
-      timer: 1000,
-    });
-    router.push("/"); // 로그인 후 이동할 경로
-  }
-};
+    if (result?.error || !result?.ok) {
+      Swal.fire({
+        icon: "error",
+        title: "로그인 실패",
+        text: "이메일 또는 비밀번호가 올바르지 않습니다.",
+        showConfirmButton: true,
+      });
+    }
+    // 로그인 성공 시 처리
+    else if (result?.ok) {
+      Swal.fire({
+        icon: "success",
+        title: "로그인 성공!",
+        showConfirmButton: false,
+        timer: 1000,
+      });
+      router.push("/"); // 로그인 후 이동할 경로
+    }
+  };
 
   return (
     <form
