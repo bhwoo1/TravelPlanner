@@ -13,34 +13,48 @@ function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!email || !password) {
+      Swal.fire({
+        icon: "warning",
+        title: "입력 오류",
+        text: "이메일과 비밀번호를 모두 입력해주세요.",
+      });
+      return;
+    }
+
     const result = await signIn("credentials", {
       redirect: false, // false로 하면 결과를 받아서 직접 처리 가능
       email,
       password,
     });
 
-    if (result?.ok) {
-      Swal.fire({
-        icon: "success",
-        title: "로그인 성공!",
-        showConfirmButton: false,
-        timer: 1000,
-      });
-      router.push("/"); // 로그인 후 이동할 경로
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: "로그인 실패",
-        text: "이메일 또는 비밀번호가 올바르지 않습니다.",
-        showConfirmButton: true,
-      });
-    }
-  };
+    console.log("SIGNIN RESULT:", result);
+
+    // 로그인 실패 시 처리
+  if (result?.error || !result?.ok) {
+    Swal.fire({
+      icon: "error",
+      title: "로그인 실패",
+      text: "이메일 또는 비밀번호가 올바르지 않습니다.",
+      showConfirmButton: true,
+    });
+  } 
+  // 로그인 성공 시 처리
+  else if (result?.ok) {
+    Swal.fire({
+      icon: "success",
+      title: "로그인 성공!",
+      showConfirmButton: false,
+      timer: 1000,
+    });
+    router.push("/"); // 로그인 후 이동할 경로
+  }
+};
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="shadow-lg rounded-2xl p-8 w-full max-w-md mx-auto flex flex-col gap-6 animate-fade-in"
+      className="shadow-lg rounded-2xl p-8 w-full max-w-md mx-auto flex flex-col gap-6"
     >
       <h2 className="text-2xl font-semibold text-center text-gray-800">
         로그인

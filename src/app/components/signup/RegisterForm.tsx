@@ -91,7 +91,7 @@ function RegisterForm() {
   return (
     <form
   onSubmit={handleSubmit}
-  className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md mx-auto flex flex-col gap-6 animate-fade-in"
+  className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md mx-auto flex flex-col gap-6"
 >
   <h2 className="text-2xl font-semibold text-center text-gray-800">회원가입</h2>
 
