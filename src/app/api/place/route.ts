@@ -3,12 +3,12 @@ import { NextResponse } from "next/server";
 const api_key = process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!;
 
 export async function POST(req: Request) {
-  const { places } = await req.json();
+  const { places, to } = await req.json();
   const results = [];
   const hotelData = [];
   try {
     for (const place of places) {
-      const url = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address,geometry,photos&input=${encodeURIComponent(place.name)}&inputtype=textquery&key=${api_key}`;
+      const url = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=formatted_address,geometry,photos&input=input=${encodeURIComponent(`${place.name} ${to}`)}&inputtype=textquery&key=${api_key}`;
 
       const res = await fetch(url);
       const data = await res.json();

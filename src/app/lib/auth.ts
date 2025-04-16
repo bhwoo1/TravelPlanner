@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { Pool } from "./db";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { RowDataPacket } from "mysql2";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({

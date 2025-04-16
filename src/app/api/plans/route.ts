@@ -8,6 +8,10 @@ const gptClient = new OpenAI({
 });
 
 
+function generateUUID() {
+  return 'xxxx-xxxx-xxxx-xxxx'.replace(/[x]/g, () => Math.floor(Math.random() * 16).toString(16));
+}
+
 export async function POST(req: Request) {
   try {
     const { from, to, transport, nights, days, keywords } = await req.json();
@@ -21,8 +25,6 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
-    console.log(from, to, transport, nights, days, keywords);
 
     const response = await gptClient.chat.completions.create({
       model: "gpt-4o",
@@ -47,6 +49,7 @@ export async function POST(req: Request) {
               - 실제 존재하는 장소로 추천해주세요.
               - 일정에 나온 장소 이름과 주소를 따로 목록으로 만들어 알려주세요.
               - 주소에는 한글 혹은 영문 알파벳으로만 표기해주세요.
+              - 이름이 같은 장소가 있다면 반드시 ${to}에 있는 장소로 알려주세요.
               - 만약 출발지에서 여행지까지 사용자가 선택한 교통수단으로 갈 수 없는 곳이면 대체 교통을 해당 이동수단의 details에 알려주세요.
               - 하루 일정은 최대 4개까지만 만들어주세요.
               - 결과는 React에서 사용할 수 있는 형식으로 itinerary(day, time, activity, details), places(name, address)로 응답해주세요.
@@ -70,12 +73,8 @@ export async function POST(req: Request) {
       .replace(/```$/, "")
       .trim();
 
-    console.log(cleanJsonText);
-
     const jsonData = JSON.parse(cleanJsonText);
     const { itinerary, places } = jsonData;
-
-    console.log(jsonData);
 
     const [planResult] = await Pool.execute<ResultSetHeader>(
       `INSERT INTO plans (from_city, to_city, transport, nights, days, keywords) VALUES (?, ?, ?, ?, ?, ?)`,
@@ -98,7 +97,16 @@ export async function POST(req: Request) {
       );
     }
 
-    return NextResponse.json({ planId }, { status: 200 });
+
+    const oneTimeId = generateUUID();  // 일회성 ID 생성
+    const expirationTime = Date.now() + 3600 * 1000;  // 1시간 후 만료
+    await Pool.execute(
+      `INSERT INTO one_time_links (one_time_id, plan_id, expiration_time, from_city, to_city, transport, nights, days, keywords)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [oneTimeId, planId, expirationTime, from, to, transport, nights, days, keywords]
+    );
+
+    return NextResponse.json({ planId, oneTimeId }, { status: 200 });
   } catch (err) {
     console.error("Error: ", err);
 

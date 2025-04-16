@@ -2,9 +2,11 @@ import { Pool } from "@/app/lib/db";
 import { Plan, User } from "@/app/Type";
 import { NextResponse } from "next/server";
 
-export async function POST(req: Request) {
-  const body = await req.json();
-  const { userId, planId } = body;
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const planId = searchParams.get("planId");
+  const userId = searchParams.get("userId");
+
 
   if (!userId) {
     return NextResponse.json(
@@ -23,12 +25,28 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: "User not found." }, { status: 400 });
       }
 
-      const [plans] = await Pool.execute(
+      const [myPlanRow] = await Pool.execute(
         "SELECT * FROM user_plan WHERE user_id = ?",
         [userId]
       );
-      console.log(plans);
-      return NextResponse.json({ plans }, { status: 200 });
+      const myPlans = myPlanRow as { user_id: number; plan_id: number }[];
+      const planIds = myPlans.map((p) => p.plan_id);
+
+      if (planIds.length > 0) {
+        const [rows] = await Pool.execute(
+          `SELECT * FROM plans WHERE id IN (${planIds
+            .map(() => "?")
+            .join(",")})`,
+          planIds
+        );
+
+        const plans = rows as Plan[];
+        console.log(plans);
+        return NextResponse.json({ plans }, { status: 200 });
+      } else {
+        console.log("저장된 계획이 없습니다.");
+        return NextResponse.json({ status: 500 });
+      }
     } catch (err) {
       console.error(err);
       return NextResponse.json({ status: 500 });
@@ -67,6 +85,11 @@ export async function POST(req: Request) {
     if (!plan[0]) {
       return NextResponse.json({ error: "Plan not found." }, { status: 400 });
     }
+    const toCity = plan[0].to_city;
+    const [city] = await Pool.execute("SELECT * FROM TOUR WHERE city = ?", [
+      toCity,
+    ]);
+
 
     const [itinerary] = await Pool.execute(
       "SELECT * FROM itineraries WHERE plan_id = ?",
@@ -93,6 +116,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       planId,
       plan: plan,
+      city: city,
       itinerary: itinerary,
       places: places,
     });

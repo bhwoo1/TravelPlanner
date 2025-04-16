@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import React, { FormEvent, useState } from "react";
 import Swal from "sweetalert2";
-import Loading from "../Loading";
+import PlanLoading from "../Loading/PlanLoading";
 
 type Plan = {
   from: string;
@@ -45,10 +45,11 @@ function SearchBar() {
       });
   
       const data = await res.json();
-      const planId = data.planId;
+      const oneTimeId = data.oneTimeId;
       
       if (data) {
-        router.push(`/plan/${planId}`);
+        console.log(data);
+        router.push(`/plan/${oneTimeId}`);
       }
       setPlan(initialPlan);
     } catch (err) {
@@ -70,7 +71,7 @@ function SearchBar() {
   return (
     <>
     {isLoading && 
-      <Loading />
+      <PlanLoading />
     }
     <form
       onSubmit={handleSubmit}

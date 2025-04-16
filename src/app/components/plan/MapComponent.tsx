@@ -1,6 +1,7 @@
 import { Hotel, Location } from "@/app/Type";
 import { AdvancedMarker, APIProvider, Map } from "@vis.gl/react-google-maps";
 import React, { useEffect, useState } from "react";
+import SkeletonBox from "../Loading/SkeletonBox";
 
 const api_key = process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!;
 const map_id = process.env.NEXT_PUBLIC_GOOGLE_MAP_ID;
@@ -35,7 +36,7 @@ function MapComponent({locations}: {locations: Location[] | Hotel[]}) {
   }, [width]);
 
   if (!locations || locations.length === 0) {
-    return <div>지도에 표시할 위치 정보가 없습니다.</div>;
+    return <SkeletonBox width={mapWidth} height="600px" />;
   }
   
   return (

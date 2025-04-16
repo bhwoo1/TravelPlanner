@@ -47,14 +47,14 @@ function LoginForm() {
         showConfirmButton: false,
         timer: 1000,
       });
-      router.push("/"); // 로그인 후 이동할 경로
+      router.back(); // 로그인 후 이동할 경로
     }
   };
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="shadow-lg rounded-2xl p-8 w-full max-w-md mx-auto flex flex-col gap-6"
+      className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md mx-auto flex flex-col gap-6"
     >
       <h2 className="text-2xl font-semibold text-center text-gray-800">
         로그인

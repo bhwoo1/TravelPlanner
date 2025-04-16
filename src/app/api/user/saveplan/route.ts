@@ -6,6 +6,8 @@ export async function POST(req: Request) {
   const body = await req.json();
   const { userId, planId } = body;
 
+  console.log(userId, planId);
+
   if (!planId || !userId) {
     return NextResponse.json(
       { error: "PlanId or UserId not found." },
@@ -28,8 +30,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Plan not found." }, { status: 400 });
     }
 
-    console.log(plan);
-
 
     const [userPlans] = await Pool.execute("SELECT * FROM user_plan WHERE user_id = ? AND plan_id = ?", [userId, planId]);
     console.log(userPlans);
@@ -37,10 +37,9 @@ export async function POST(req: Request) {
     const user_plan = userPlans as Plan[];
 
     if (user_plan.length != 0) {
-        return NextResponse.json({ error: "Plan already saved." }, { status: 500 }); 
+        return NextResponse.json({ error: "Plan already saved." }, { status: 409 }); 
     }
 
-    console.log(user_plan);
 
     await Pool.execute("INSERT INTO user_plan VALUES(?, ?)", [userId, planId]);
 

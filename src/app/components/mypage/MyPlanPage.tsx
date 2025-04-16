@@ -3,36 +3,60 @@
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import Background from "../layout/Background";
-import Title from "./Title";
-import PlanBlock from "./block/PlanBlock";
 import { Itinerary } from "@/app/Type";
-import DayBlock from "./block/DayBlock";
-import SkyBlock from "./block/SkyBlock";
-import NoneBlock from "./block/NoneBlock";
-import PlaceComponent from "./PlaceComponent";
-import HotelButton from "./block/HotelButton";
-import SaveButton from "./SaveButton";
+import { useSession } from "next-auth/react";
+import Title from "../plan/Title";
+import PlanBlock from "../plan/block/PlanBlock";
+import DayBlock from "../plan/block/DayBlock";
+import PlaceComponent from "../plan/PlaceComponent";
+import SkyBlock from "../plan/block/SkyBlock";
+import NoneBlock from "../plan/block/NoneBlock";
+import Swal from "sweetalert2";
+import HotelButton from "../plan/block/HotelButton";
+import DeleteButton from "../plan/DeleteButton";
 import PlanContentLoading from "../Loading/PlanContentLoading";
 
-const fetchPlan = async (oneTimeId: string) => {
-  console.log(oneTimeId);
-  try {
-    const res = await fetch(`/api/plan?oneTimeId=${oneTimeId}`, {
-      method: "GET",
+const fetchPlan = async ({
+  planID,
+  userID,
+}: {
+  planID: string;
+  userID: string | undefined;
+}) => {
+  if (!userID) {
+    Swal.fire({
+      icon: "error",
+      title: "Error!",
+      text: "로그인이 필요합니다.",
+      showConfirmButton: false,
+      timer: 1000,
     });
+    return null;
+  }
+  try {
+    console.log(planID)
+    const res = await fetch(
+      `/api/user/readplan?planId=${planID}&userId=${userID}`,
+      {
+        method: "GET",
+      }
+    );
 
     const data = await res.json();
-    console.log(data.plan);
     return data;
   } catch (err) {
     console.error(err);
   }
 };
 
-function PlanPage({ oneTimeId }: { oneTimeId: string }) {
+function MyPlanPage({ planID }: { planID: string }) {
+  const { data: session } = useSession();
+  const userID = session?.user?.id;
+
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["plan", oneTimeId], 
-    queryFn: () => fetchPlan(oneTimeId),
+    queryKey: ["myplan", userID, planID],
+    queryFn: () => fetchPlan({ planID, userID }),
+    enabled: !!userID,
   });
 
   if (isLoading) return <PlanContentLoading />;
@@ -40,15 +64,15 @@ function PlanPage({ oneTimeId }: { oneTimeId: string }) {
 
   // itinerary 데이터를 day별로 그룹화
   const groupByDay = data.itinerary.reduce(
-    (acc: Record<number, Itinerary[]>, item: Itinerary) => {
-      if (!acc[item.day]) {
-        acc[item.day] = [];
-      }
-      acc[item.day].push(item);
-      return acc;
-    },
-    {} as Record<number, Itinerary[]>
-  );
+      (acc: Record<number, Itinerary[]>, item: Itinerary) => {
+        if (!acc[item.day]) {
+          acc[item.day] = [];
+        }
+        acc[item.day].push(item);
+        return acc;
+      },
+      {} as Record<number, Itinerary[]>
+    );
 
   return (
     <main className="flex flex-col">
@@ -61,7 +85,7 @@ function PlanPage({ oneTimeId }: { oneTimeId: string }) {
           <PlanBlock plan={data.plan[0]} />
         </article>
         <div className="m-4">
-          <SaveButton planId={data.plan[0].id} />
+          <DeleteButton planId={data.plan[0].id} />
         </div>
         <article className="flex flex-col gap-4 mt-12">
           <p className="text-center font-bold text-sm">
@@ -78,7 +102,7 @@ function PlanPage({ oneTimeId }: { oneTimeId: string }) {
           </div>
         </article>
         <article className="mt-12 w-full">
-          <PlaceComponent places={data.places} to={data.plan[0].to_city} />
+          <PlaceComponent places={data.places} to={data.plan[0].to_city}/>
         </article>
         <section className="flex flex-col md:flex-row mt-12 gap-2">
           {data.plan[0].transport === "비행기" ? (
@@ -93,4 +117,4 @@ function PlanPage({ oneTimeId }: { oneTimeId: string }) {
   );
 }
 
-export default PlanPage;
+export default MyPlanPage;
