@@ -48,7 +48,6 @@ function SearchBar() {
       const oneTimeId = data.oneTimeId;
       
       if (data) {
-        console.log(data);
         router.push(`/plan/${oneTimeId}`);
       }
       setPlan(initialPlan);
