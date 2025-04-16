@@ -42,7 +42,7 @@ export async function POST(req: Request) {
               - 한국어로 답변해주세요.
               - 일정은 'itinerary'와 'places' 두 개로 나누어 주세요.
               - 'itinerary'에는 day, time, activity, details만 포함하고, 'places'에는 name, address만 포함해주세요.
-              - 하루 일정은 최대 4개, 최대 10일차까지 생성해주세요.
+              - 하루 일정은 최대 2개, 최대 5일차까지 생성해주세요.
               - 불필요한 주석이나 예약어는 포함하지 말아주세요.
               - 결과는 React 사용할 수 있는 형식으로 데이터만 포함해서 답변해주세요. 기타 다른 예약어, 주석 등은 절대 삽입하지 말아주세요.`
       
