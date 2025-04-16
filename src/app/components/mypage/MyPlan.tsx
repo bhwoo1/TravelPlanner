@@ -14,7 +14,6 @@ const fetchMyPlan = async ({ userId }: { userId: string }) => {
     });
 
     const data = await res.json();
-    console.log(data.plans);
     return data;
   } catch (err) {
     console.error(err);

@@ -34,7 +34,6 @@ const fetchPlan = async ({
     return null;
   }
   try {
-    console.log(planID)
     const res = await fetch(
       `/api/user/readplan?planId=${planID}&userId=${userID}`,
       {
