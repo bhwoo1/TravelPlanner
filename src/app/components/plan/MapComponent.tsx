@@ -3,8 +3,8 @@ import { AdvancedMarker, APIProvider, Map } from "@vis.gl/react-google-maps";
 import React, { useEffect, useState } from "react";
 import SkeletonBox from "../Loading/SkeletonBox";
 
-const api_key = process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!;
-const map_id = process.env.NEXT_PUBLIC_GOOGLE_MAP_ID;
+const api_key = process.env.GOOGLE_MAP_API_KEY!;
+const map_id = process.env.GOOGLE_MAP_ID;
 
 function useWindowSize() {
   const [width, setWidth] = useState(0);

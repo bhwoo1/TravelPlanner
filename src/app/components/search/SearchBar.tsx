@@ -53,7 +53,7 @@ function SearchBar() {
       }
       setPlan(initialPlan);
     } catch (err) {
-      console.error(err);
+      console.log(err);
       Swal.fire({
         title: "Error!",
         icon: "error",

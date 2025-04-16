@@ -28,8 +28,6 @@ function LoginForm() {
       password,
     });
 
-    console.log("SIGNIN RESULT:", result);
-
     // 로그인 실패 시 처리
     if (result?.error || !result?.ok) {
       Swal.fire({

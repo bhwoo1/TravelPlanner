@@ -4,7 +4,7 @@ import { ResultSetHeader } from "mysql2/promise";
 import { Pool } from "@/app/lib/db";
 
 const gptClient = new OpenAI({
-  apiKey: process.env.NEXT_PUBLIC_OPEN_AI_API,
+  apiKey: process.env.OPEN_AI_API,
 });
 
 
