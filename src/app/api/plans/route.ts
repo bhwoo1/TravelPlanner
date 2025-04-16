@@ -7,7 +7,7 @@ const gptClient = new OpenAI({
   apiKey: process.env.OPEN_AI_API,
 });
 
-function generateUUID() {
+function generateOneTimeID() {
   return "xxxx-xxxx-xxxx-xxxx".replace(/[x]/g, () =>
     Math.floor(Math.random() * 16).toString(16)
   );
@@ -111,7 +111,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const oneTimeId = generateUUID(); // 일회성 ID 생성
+    const oneTimeId = generateOneTimeID(); // 일회성 ID 생성
     const expirationTime = Date.now() + 3600 * 1000; // 1시간 후 만료
     await Pool.execute(
       `INSERT INTO one_time_links (one_time_id, plan_id, expiration_time, from_city, to_city, transport, nights, days, keywords)
