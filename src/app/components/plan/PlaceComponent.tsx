@@ -12,6 +12,7 @@ function PlaceComponent({ places, to }: { places: Place[]; to: string }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    console.log(places);
     const fetchPlace = async () => {
       setIsLoading(true); // 요청 시작 시 로딩 시작
       try {

@@ -70,7 +70,6 @@ export async function POST(req: Request) {
     });
 
     const resultText = response.choices[0]?.message?.content;
-    console.log(resultText);
 
     if (!resultText) {
       return NextResponse.json({ error: "GPT 응답 없음" }, { status: 500 });
