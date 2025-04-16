@@ -15,7 +15,6 @@ import SaveButton from "./SaveButton";
 import PlanContentLoading from "../Loading/PlanContentLoading";
 
 const fetchPlan = async (oneTimeId: string) => {
-  console.log(oneTimeId);
   try {
     const res = await fetch(`/api/plan?oneTimeId=${oneTimeId}`, {
       method: "GET",

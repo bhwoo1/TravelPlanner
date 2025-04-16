@@ -45,12 +45,7 @@ export async function POST(req: Request) {
               - 'itinerary'에는 day, time, activity, details만 포함하고, 'places'에는 name, address만 포함해주세요.
               - 하루 일정은 최대 2개, 최대 5일차까지 생성해주세요.
               - 불필요한 주석이나 예약어는 포함하지 말아주세요.
-              - 결과는 반드시 아래 JSON 형식으로만 응답해주세요. 기타 주석, 설명, const, export 등은 절대 포함하지 마세요.
-              
-              {
-                "itinerary": [...],
-                "places": [...]
-              }`,
+              - 결과는 반드시 JSON 형식으로만 응답해주세요. 기타 주석, 설명, const, export 등은 절대 포함하지 마세요.`,
 
           // 조건:
           // - 답변은 한국어로 해주세요.
