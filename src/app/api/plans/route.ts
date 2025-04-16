@@ -28,23 +28,29 @@ export async function POST(req: Request) {
     }
 
     const response = await gptClient.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4-turbo",
       messages: [
         {
           role: "user",
-          content: `다음 조건에 맞는 여행 일정을 만들어 주세요.
-              - 출발지: ${from},
-              - 여행지: ${to},
-              - 이동수단: ${transport}
-              - 기간: ${nights}박 ${days}일
-              - 하고 싶은 활동: ${keywords}
+          content: `여행 일정 짜줘. 조건:
+- 출발: ${from}, 도착: ${to}, 교통: ${transport}, ${nights}박 ${days}일
+- 활동: ${keywords}
+- 결과는 itinerary(day, time, activity, details), places(name, address) 구조의 JSON
+- 하루 일정은 2개 이하, 최대 ${days}일차까지
+- JSON 외 다른 형식/주석/설명은 절대 넣지 마`,
+          // content: `다음 조건에 맞는 여행 일정을 만들어 주세요.
+          //     - 출발지: ${from},
+          //     - 여행지: ${to},
+          //     - 이동수단: ${transport}
+          //     - 기간: ${nights}박 ${days}일
+          //     - 하고 싶은 활동: ${keywords}
 
-              조건:
-              - 한국어로 답변해주세요.
-              - 'itinerary'에는 day, time, activity, details만 포함하고, 'places'에는 name, address만 포함해주세요.
-              - 하루 일정은 최대 2개까지 생성해주세요.
-              - 불필요한 주석이나 예약어는 포함하지 말아주세요.
-              - 결과는 반드시 JSON 형식으로만 응답해주세요.`,
+          //     조건:
+          //     - 한국어로 답변해주세요.
+          //     - 'itinerary'에는 day, time, activity, details만 포함하고, 'places'에는 name, address만 포함해주세요.
+          //     - 하루 일정은 최대 2개까지 생성해주세요.
+          //     - 불필요한 주석이나 예약어는 포함하지 말아주세요.
+          //     - 결과는 반드시 JSON 형식으로만 응답해주세요.`,
 
           // 조건:
           // - 답변은 한국어로 해주세요.
