@@ -22,7 +22,6 @@ const fetchPlan = async (oneTimeId: string) => {
     });
 
     const data = await res.json();
-    console.log(data.plan);
     return data;
   } catch (err) {
     console.error(err);
