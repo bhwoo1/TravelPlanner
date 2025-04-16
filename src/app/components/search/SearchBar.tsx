@@ -46,6 +46,7 @@ function SearchBar() {
   
       const data = await res.json();
       const oneTimeId = data.oneTimeId;
+      console.log(oneTimeId);
       
       if (data) {
         router.push(`/plan/${oneTimeId}`);
